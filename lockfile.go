@@ -2,6 +2,8 @@
 // Use of this source code is governed by the standard MIT License (MIT)
 // that can be found in the LICENSE file.
 
+// additional code 2021 ehb54. All rights reserverd.
+
 // Package lockfile implements a simple automatic lockfile (PID) method for golang.
 //		if lock, err := lockfile.Lock(filename); err != nil {
 //			panic(err)
@@ -14,6 +16,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
+        "path/filepath"
+         ps "github.com/ehb54/go-ps"    
 )
 
 var AlreadyLocked = errors.New("Locked by other process")
@@ -36,7 +40,10 @@ func Lock(name string) (*LockFile, error) {
 		if _, err = fmt.Fscanf(lock.file, "%d\n", &pid); err == nil {
 			if pid != os.Getpid() {
 				if ProcessRunning(pid) {
-					return nil, AlreadyLocked
+                                        p, err := ps.FindProcess( pid )
+                                        if err != nil || p.Executable() == filepath.Base(os.Args[0]) {
+    					        return nil, AlreadyLocked
+                                        }
 				}
 			}
 		}
