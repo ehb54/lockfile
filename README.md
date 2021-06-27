@@ -2,11 +2,14 @@
 
 Package lockfile implements a simple automatic lockfile (PID) method for golang.
 
-[![Build Status](https://semaphoreci.com/api/v1/fredli74/lockfile/branches/master/badge.svg)](https://semaphoreci.com/fredli74/lockfile)
+## Updates to Fork parent
+
+This version checks for a command line match to the pid if the pid is running.
+This is useful after a system reboot when another process may have taken the PID.
 
 ## Usage
 
-    import "github.com/fredli74/lockfile"
+    import "github.com/ehb54/lockfile"
 
 ### Example
 ```go
