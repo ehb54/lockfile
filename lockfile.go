@@ -41,7 +41,8 @@ func Lock(name string) (*LockFile, error) {
 			if pid != os.Getpid() {
 				if ProcessRunning(pid) {
                                         p, err := ps.FindProcess( pid )
-                                        if err != nil || p.Executable() == filepath.Base(os.Args[0]) {
+                                        // proc/stat used by go-ps only holds 15 characters
+                                        if err != nil || p.Executable()[0:15] == filepath.Base(os.Args[0])[0:15] {
     					        return nil, AlreadyLocked
                                         }
 				}
